@@ -407,6 +407,17 @@ class ISVCDecoder {
       SBufferInfo* pDstInfo) = 0;
 
   /**
+  * @brief   This function gets a decoded ready frame remaining in buffers after the last frame has been decoded.
+  * Use GetOption with option DECODER_OPTION_NUM_OF_FRAMES_REMAINING_IN_BUFFER to get the number of frames remaining in buffers.
+  * Note that it is only applicable for profile_idc != 66
+  * @param   ppDst buffer pointer of decoded data (YUV)
+  * @param   pDstInfo information provided to API(width, height, etc.)
+  * @return  0 - success; otherwise -failed;
+  */
+  virtual DECODING_STATE EXTAPI FlushFrame (unsigned char** ppDst,
+      SBufferInfo* pDstInfo) = 0;
+
+  /**
   * @brief   This function parse input bitstream only, and rewrite possible SVC syntax to AVC syntax
   * @param   pSrc the h264 stream to be decoded
   * @param   iSrcLen the length of h264 stream
@@ -501,6 +512,9 @@ DECODING_STATE (*DecodeFrame2) (ISVCDecoder*, const unsigned char* pSrc,
                                 const int iSrcLen,
                                 unsigned char** ppDst,
                                 SBufferInfo* pDstInfo);
+
+DECODING_STATE (*FlushFrame) (ISVCDecoder*, unsigned char** ppDst,
+                              SBufferInfo* pDstInfo);
 
 DECODING_STATE (*DecodeParser) (ISVCDecoder*, const unsigned char* pSrc,
                                 const int iSrcLen,
